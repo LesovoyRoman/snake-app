@@ -1,7 +1,20 @@
 'use strict';
 
-import _ from 'lodash'
+import { defineElements } from './app/App.js'
 
-import { defineApp } from './app/App.js'
+import SnakeApp from './app/classes/SnakeApp';
+import GameField from './app/classes/GameField'
 
-defineApp()
+const Elements = [
+    {
+        name: 'snake-app',
+        component: SnakeApp,
+        app: true
+    },
+    {
+        name: 'snake-app-field',
+        component: GameField,
+    },
+]
+
+defineElements( Elements )

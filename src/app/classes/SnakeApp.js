@@ -11,7 +11,7 @@ export default class SnakeApp extends HTMLElement {
 
         super();
 
-        bindTemplate(this, parseHtml(template), "#App")
+        bindTemplate( this, parseHtml( template ), "#App" )
 
         SnakeApp.singleton = this
     }

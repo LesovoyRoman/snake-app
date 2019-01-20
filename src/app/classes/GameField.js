@@ -7,6 +7,6 @@ export default class GameField extends HTMLElement {
     constructor() {
         super();
 
-        bindTemplate(this, parseHtml(template), "#field")
+        bindTemplate( this, parseHtml( template ), "#field" )
     }
 }
