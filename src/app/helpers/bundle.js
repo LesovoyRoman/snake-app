@@ -1,7 +1,5 @@
 'use strict';
 
-import { fieldSizes } from "../configGame";
-
 /**
  * Parse file with html
  *
@@ -28,25 +26,16 @@ export function bindTemplate( object, template, selector ) {
 }
 
 /**
- * Generate value from min to max
+ * Singleton
  *
- * @param min
- * @param max
- * @returns {number}
+ * @param Object
+ * @param Instance
+ * @returns {*}
  */
-export function getRandomInt( min, max ) {
-    min = Math.ceil( min );
-    max = Math.floor( max );
-    return Math.floor( Math.random() * ( max - min + 1 ) ) + min;
-}
-
-/**
- * Generate coordinates
- * @returns {number[]}
- */
-export function generateCoordinates() {
-    return [
-        getRandomInt( 0, fieldSizes.width ),
-        getRandomInt( 0, fieldSizes.height )
-    ]
+export function singleton( Object, Instance ) {
+    if ( Object.singleton ) {
+        throw new Error('Singleton instance of ' + Object.name + ' already exists, use {Object}.getInstance()');
+    }
+    Object.singleton = Instance;
+    return Object;
 }

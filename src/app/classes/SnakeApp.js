@@ -1,18 +1,20 @@
 'use strict';
 
 import template from './../App.html'
-import { parseHtml, bindTemplate } from './../helpers/bundle'
+import { parseHtml, bindTemplate, singleton } from './../helpers/bundle'
 
 export default class SnakeApp extends HTMLElement {
     constructor() {
-        if ( SnakeApp.singleton ) {
-            return SnakeApp.singleton
-        }
-
         super();
+        singleton( SnakeApp, this )
 
         bindTemplate( this, parseHtml( template ), "#App" )
+    }
 
-        SnakeApp.singleton = this
+    /**
+     * @returns {SnakeApp}
+     */
+    static getInstance() {
+        return this;
     }
 }
