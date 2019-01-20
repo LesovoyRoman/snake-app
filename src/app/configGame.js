@@ -10,7 +10,8 @@ export const snakeElements = {
     common: {
         width: 4 + measurement,
         height: 4 + measurement,
-        background: '#000'
+        background: '#000',
+        position: 'absolute',
     },
 }
 export const elementToGenerate = 'snake-element';
@@ -32,6 +33,7 @@ export const gameField = {
     width: fieldSizes.width + measurement,
     height: fieldSizes.height + measurement,
     border: 4 + measurement + ' solid black',
-    margin: 25 + measurement + ' auto'
+    margin: 25 + measurement + ' auto',
+    position: 'relative'
 }
 

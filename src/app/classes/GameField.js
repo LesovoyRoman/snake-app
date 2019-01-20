@@ -1,8 +1,8 @@
 'use strict';
 
 import template from './../components/GameField.html'
-import { parseHtml, bindTemplate, getRandomInt } from './../helpers/bundle'
-import { gameField, fieldSizes, elementToGenerate, measurement } from "../configGame";
+import { parseHtml, bindTemplate, generateCoordinates } from './../helpers/bundle'
+import { gameField, elementToGenerate, measurement } from "../configGame";
 
 export default class GameField extends HTMLElement {
     constructor() {
@@ -15,8 +15,8 @@ export default class GameField extends HTMLElement {
          *
          * @type {HTMLElement}
          */
-        let shadowRootGameField = this.shadowRoot.getElementById( 'gameField' );
-        for ( let specificStyle in gameField ) shadowRootGameField.style[ specificStyle ] = gameField[ specificStyle ]
+        this.gameFieldToInject = this.shadowRoot.getElementById( 'gameField' );
+        for ( let specificStyle in gameField ) this.gameFieldToInject.style[ specificStyle ] = gameField[ specificStyle ]
 
         this.generateElement()
     }
@@ -27,7 +27,7 @@ export default class GameField extends HTMLElement {
      */
     generateElement() {
          let newElement = document.createElement( elementToGenerate )
-         return this.placeElementTo( ...this.generateCoordinates(), newElement )
+         return this.placeElementTo( ...generateCoordinates(), newElement )
     }
 
     placeElementTo( x, y, Element ) {
@@ -39,15 +39,7 @@ export default class GameField extends HTMLElement {
     }
 
     injectElement( Element ) {
-        this.shadowRoot.appendChild(Element)
+        this.gameFieldToInject.appendChild( Element )
     }
-
-    generateCoordinates() {
-        return [
-            getRandomInt( 0, fieldSizes.width ),
-            getRandomInt( 0, fieldSizes.height )
-        ]
-    }
-
 
 }
