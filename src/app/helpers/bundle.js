@@ -39,3 +39,13 @@ export function singleton( Object, Instance ) {
     Object.singleton = Instance;
     return Object;
 }
+
+/**
+ * Set styles to instance
+ *
+ * @param styles
+ * @param InstanceElement
+ */
+export function setStylesInstance( styles, InstanceElement ) {
+    for ( let specificStyle in styles ) InstanceElement.style[ specificStyle ] = styles[ specificStyle ]
+}

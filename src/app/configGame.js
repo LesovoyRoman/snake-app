@@ -37,13 +37,17 @@ export const gameField = {
     position: 'relative'
 }
 
+export const snakeDirections = [ 'right', 'left', 'bottom', 'top' ];
+
 export const snake = {
     length: 5,
-    directionVertically: false,
+    direction: snakeDirections[0],
     settable: {
         position: 'absolute',
         left: 150 + measurement,
         top: 100 + measurement,
     }
 }
+
+
 

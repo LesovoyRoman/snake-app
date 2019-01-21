@@ -1,7 +1,7 @@
 'use strict';
 
 import template from './../components/GameField.html'
-import {parseHtml, bindTemplate, singleton} from './../helpers/bundle'
+import { parseHtml, bindTemplate, singleton, setStylesInstance } from './../helpers/bundle'
 import { gameField } from "../configGame";
 import { generateElement } from "../helpers/generatorElements";
 
@@ -18,7 +18,7 @@ export default class GameField extends HTMLElement {
          * @type {HTMLElement}
          */
         GameField.gameFieldToInject = this.shadowRoot.getElementById( 'gameField' );
-        for ( let specificStyle in gameField ) GameField.gameFieldToInject.style[ specificStyle ] = gameField[ specificStyle ]
+        GameField.setStyles();
 
         /**
          * Generate first block
@@ -31,5 +31,9 @@ export default class GameField extends HTMLElement {
      */
     static getInstance() {
         return this;
+    }
+
+    static setStyles() {
+        return setStylesInstance( gameField, GameField.gameFieldToInject )
     }
 }

@@ -1,7 +1,7 @@
 'use strict';
 
 import template from './../components/SnakeCommon.html'
-import { parseHtml, bindTemplate, singleton } from './../helpers/bundle'
+import { parseHtml, bindTemplate, singleton, setStylesInstance } from './../helpers/bundle'
 import { snake } from "../configGame";
 import { generateElement } from "../helpers/generatorElements";
 
@@ -9,13 +9,11 @@ export default class SnakeCommon extends HTMLElement {
     constructor() {
         super();
         singleton( SnakeCommon, this )
-
         bindTemplate( this, parseHtml( template ), "#snakeCommon" )
 
         SnakeCommon.snakeBody = this.shadowRoot.getElementById( 'snakeBody' );
-        for ( let specificStyle in snake.settable ) SnakeCommon.snakeBody.style[ specificStyle ] = snake.settable[ specificStyle ]
-
-        SnakeCommon.directionVertically = snake.directionVertically;
+        SnakeCommon.setStyles();
+        SnakeCommon.direction = snake.direction;
         SnakeCommon.buildSnake();
     }
 
@@ -24,6 +22,10 @@ export default class SnakeCommon extends HTMLElement {
      */
     static getInstance() {
         return this;
+    }
+
+    static setStyles() {
+        return setStylesInstance( snake.settable, SnakeCommon.snakeBody )
     }
 
     static buildSnake() {
@@ -37,7 +39,7 @@ export default class SnakeCommon extends HTMLElement {
 
     }
 
-    static changeDirection() {
-        SnakeCommon.directionVertically = !SnakeCommon.directionVertically
+    static changeDirection( direction ) {
+        SnakeCommon.direction = direction
     }
 }
