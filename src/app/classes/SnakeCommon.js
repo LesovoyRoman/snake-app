@@ -2,7 +2,7 @@
 
 import template from './../components/SnakeCommon.html'
 import { parseHtml, bindTemplate, singleton, setStylesInstance } from './../helpers/bundle'
-import { snake } from "../configGame";
+import {snake, sizeElement, measurement} from "../configGame";
 import { generateElement } from "../helpers/generatorElements";
 
 export default class SnakeCommon extends HTMLElement {
@@ -14,6 +14,7 @@ export default class SnakeCommon extends HTMLElement {
         SnakeCommon.snakeBody = this.shadowRoot.getElementById( 'snakeBody' );
         SnakeCommon.setStyles();
         SnakeCommon.direction = snake.direction;
+
         SnakeCommon.buildSnake();
     }
 
@@ -35,10 +36,46 @@ export default class SnakeCommon extends HTMLElement {
         }
     }
 
+    // @todo function to increase snake
     static multiplySnake() {
 
     }
 
+    static moveSnakeTo(x, back) {
+        back ?
+            SnakeCommon.snakeBody.style[ x ? 'left' : 'top' ] =
+                SnakeCommon.snakeBody.style[ x ? 'left' : 'top' ].split( measurement )[ 0 ] * 1 - sizeElement + measurement
+            :
+            SnakeCommon.snakeBody.style[ x ? 'left' : 'top' ] =
+                SnakeCommon.snakeBody.style[ x ? 'left' : 'top' ].split( measurement )[ 0 ] * 1 + sizeElement + measurement
+    }
+
+    /**
+     * Move snake in current direction
+     *
+     * @param countedSteps
+     */
+    static moveSnake(countedSteps) {
+        switch (SnakeCommon.direction) {
+            case 'right':
+                SnakeCommon.moveSnakeTo(true, true);
+                break;
+
+            case 'left':
+                SnakeCommon.moveSnakeTo(true, false);
+                break;
+
+            case 'top':
+                SnakeCommon.moveSnakeTo(false, false);
+                break;
+
+            case 'bottom':
+                SnakeCommon.moveSnakeTo(false, true);
+                break;
+        }
+    }
+
+    // @todo needs to change body of snake
     static changeDirection( direction ) {
         SnakeCommon.direction = direction
     }

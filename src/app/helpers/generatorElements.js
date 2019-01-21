@@ -1,6 +1,6 @@
 'use strict';
 
-import { elementToGenerate, fieldSizes, measurement, snakeElements } from "../configGame";
+import { elementToGenerate, fieldSizes, measurement, snakeElements, sizeElement } from "../configGame";
 import SnakeCommon from './../classes/SnakeCommon'
 
 /**
@@ -48,7 +48,7 @@ export function placeElementTo( x, y, Element ) {
  * @param Element
  * @returns {*}
  */
-export function setElementInline(Element, snakePartBody ) {
+export function setElementInline( Element, snakePartBody ) {
     Element.style.position = 'absolute'
     Element.style.top = '1px'
     Element.style.left = '0px'
@@ -57,10 +57,10 @@ export function setElementInline(Element, snakePartBody ) {
      * Place blocks vertically or horizontally
      */
     if( typeof snakePartBody.style !== 'undefined' ) {
-        SnakeCommon.directionVertically ?
-            Element.style.top = ((snakePartBody.style.top.split('px')[0] * 1) + 6) + measurement
+        SnakeCommon.direction === 'top' || SnakeCommon.direction === 'bottom' ?
+            Element.style.top = ( ( snakePartBody.style.top.split('px')[0] * 1) + sizeElement + 2 ) + measurement
             :
-            Element.style.left = ((snakePartBody.style.left.split('px')[0] * 1) + 6) + measurement
+            Element.style.left = ( ( snakePartBody.style.left.split('px')[0] * 1 ) + sizeElement + 2 ) + measurement
     }
 
     return Element

@@ -1,6 +1,7 @@
 'use strict';
 
 export const measurement = 'px';
+export const sizeElement = 4;
 
 /**
  * Elements
@@ -8,8 +9,8 @@ export const measurement = 'px';
  */
 export const snakeElements = {
     common: {
-        width: 4 + measurement,
-        height: 4 + measurement,
+        width: sizeElement + measurement,
+        height: sizeElement + measurement,
         background: '#000',
         position: 'absolute',
     },
@@ -34,14 +35,16 @@ export const gameField = {
     height: fieldSizes.height + measurement,
     border: 4 + measurement + ' solid black',
     margin: 25 + measurement + ' auto',
-    position: 'relative'
+    position: 'relative',
+    overflow: 'hidden'
 }
 
 export const snakeDirections = [ 'right', 'left', 'bottom', 'top' ];
 
 export const snake = {
+    speed: 500,
     length: 5,
-    direction: snakeDirections[0],
+    direction: snakeDirections[2],
     settable: {
         position: 'absolute',
         left: 150 + measurement,
