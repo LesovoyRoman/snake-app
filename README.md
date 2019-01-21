@@ -6,4 +6,3 @@ webpack js es6
 
 # Start
 - npm run server
-- npm run watch

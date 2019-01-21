@@ -7,7 +7,6 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack",
     "server": "webpack-dev-server --content-base ./dist/ --watch-content-base --port 9999 --hot",
-    "watch": "webpack --watch"
   },
   "keywords": [],
   "author": "",
