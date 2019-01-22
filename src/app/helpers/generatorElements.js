@@ -2,7 +2,7 @@
 
 import { elementToGenerate, fieldSizes, measurement, snakeElements, sizeElement } from "../configGame";
 import SnakeCommon from './../classes/SnakeCommon'
-import { setStylesInstance } from "./bundle";
+import {separateElementSnakeBody, setStylesInstance} from "./bundle";
 
 /**
  * Generate value from min to max
@@ -60,14 +60,14 @@ export function setElementInline( Element, snakePartBody ) {
          * In row vertically
          */
         if(SnakeCommon.direction === 'top' || SnakeCommon.direction === 'bottom') {
-            Element.style.top = ( ( snakePartBody.style.top.split('px')[0] * 1) + sizeElement + 2 ) + measurement
+            Element.style.top =  separateElementSnakeBody( snakePartBody, 'top' ) + measurement
             Element.style.left = snakePartBody.style.left
         }
         /**
          * In row horizontally
          */
         else {
-            Element.style.left = ( ( snakePartBody.style.left.split('px')[0] * 1 ) + sizeElement + 2 ) + measurement
+            Element.style.left = separateElementSnakeBody( snakePartBody, 'left' ) + measurement
             Element.style.top = snakePartBody.style.top
         }
     } else {

@@ -1,8 +1,8 @@
 'use strict';
 
 import template from './../components/SnakeCommon.html'
-import { parseHtml, bindTemplate, singleton } from './../helpers/bundle'
-import {snake, sizeElement, measurement} from "../configGame";
+import {parseHtml, bindTemplate, singleton, checkOutOfGameField, getValueNumberStyles} from './../helpers/bundle'
+import { snake, sizeElement, measurement } from "../configGame";
 import { generateElement } from "../helpers/generatorElements";
 
 export default class SnakeCommon extends HTMLElement {
@@ -41,14 +41,20 @@ export default class SnakeCommon extends HTMLElement {
 
     }
 
-    static moveSnakeTo(x, back) {
+    static moveSnakeTo( x, back ) {
         back ?
-                SnakeCommon.snakeBody.childNodes.forEach((e) => {
-                    e.style[ x ? 'left' : 'top' ] = e.style[ x ? 'left' : 'top' ].split( measurement )[ 0 ] * 1 - sizeElement + measurement
+                SnakeCommon.snakeBody.childNodes.forEach( ( Element, index ) => {
+                    Element.style[ x ? 'left' : 'top' ] =
+                        getValueNumberStyles( Element, x ? 'left' : 'top' ) - sizeElement + measurement
+
+                    checkOutOfGameField( Element, x ? 'left' : 'top', index )
                 })
             :
-                SnakeCommon.snakeBody.childNodes.forEach((e) => {
-                    e.style[ x ? 'left' : 'top' ] = e.style[ x ? 'left' : 'top' ].split( measurement )[ 0 ] * 1 + sizeElement + measurement
+                SnakeCommon.snakeBody.childNodes.forEach( ( Element, index ) => {
+                    Element.style[ x ? 'left' : 'top' ] =
+                        getValueNumberStyles( Element, x ? 'left' : 'top' ) + sizeElement + measurement
+
+                    checkOutOfGameField( Element, x ? 'left' : 'top', index )
                 })
     }
 
@@ -57,8 +63,8 @@ export default class SnakeCommon extends HTMLElement {
      *
      * @param countedSteps
      */
-    static moveSnake(countedSteps) {
-        switch (SnakeCommon.direction) {
+    static moveSnake( countedSteps ) {
+        switch ( SnakeCommon.direction ) {
             case 'right':
                 SnakeCommon.moveSnakeTo(true, true);
                 break;
@@ -78,6 +84,7 @@ export default class SnakeCommon extends HTMLElement {
     }
 
     // @todo needs to change body of snake
+    // @todo call function to set in row elements
     static changeDirection( direction ) {
         SnakeCommon.direction = direction
     }

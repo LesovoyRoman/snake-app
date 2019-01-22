@@ -48,7 +48,7 @@ export const gameField = {
 export const snake = {
     speed: 500,
     length: 5,
-    direction: snakeDirections[2]
+    direction: snakeDirections[0]
 }
 
 

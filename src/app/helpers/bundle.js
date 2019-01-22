@@ -1,5 +1,8 @@
 'use strict';
 
+import {fieldSizes, measurement, sizeElement} from "../configGame";
+import SnakeCommon from "../classes/SnakeCommon";
+
 /**
  * Parse file with html
  *
@@ -9,6 +12,54 @@
 export function parseHtml( template ) {
     let parser = new DOMParser();
     return parser.parseFromString( template, 'text/html' );
+}
+
+/**
+ * Uses to place on each Element depended on prev. Element
+ *
+ * @param Element
+ * @param direction
+ * @param versa
+ * @returns {number}
+ */
+export function separateElementSnakeBody( Element, direction, versa = false ) {
+    if( versa )
+        return getValueNumberStyles( Element, direction ) - ( sizeElement + 2 )
+    return getValueNumberStyles( Element, direction ) + ( sizeElement + 2 )
+}
+
+export function getValueNumberStyles( Element, style ) {
+    return Element.style[ style ].split( measurement )[0] * 1
+}
+
+/**
+ * Uses for moving through boards in game field
+ *
+ * @param Element
+ * @param direction
+ * @param index
+ */
+export function checkOutOfGameField( Element, direction, index ) {
+    let positionInDirection = getValueNumberStyles( Element, direction )
+
+    let border;
+     direction === 'left' ?
+         border = 'width'
+     :
+         border = 'height'
+
+    /**
+     * Set opposite position for each direction
+     */
+    if( index === 0 && ( positionInDirection < 0 || positionInDirection >= fieldSizes[ border ] ) ) {
+        Element.style[ direction ] = fieldSizes[ border ] + measurement
+    }  else if( positionInDirection < 0 || positionInDirection >= fieldSizes[ border ] ) {
+        if ( positionInDirection >= fieldSizes[ border ] )
+            Element.style[ direction ] = separateElementSnakeBody( SnakeCommon.snakeBody.childNodes[ index - 1 ], direction,  true ) + measurement
+
+        if( positionInDirection < 0 )
+            Element.style[ direction ] = separateElementSnakeBody( SnakeCommon.snakeBody.childNodes[ index - 1], direction ) + measurement
+    }
 }
 
 /**
