@@ -2,6 +2,7 @@
 
 import { elementToGenerate, fieldSizes, measurement, snakeElements, sizeElement } from "../configGame";
 import SnakeCommon from './../classes/SnakeCommon'
+import { setStylesInstance } from "./bundle";
 
 /**
  * Generate value from min to max
@@ -33,7 +34,6 @@ export function generateCoordinates() {
  * @param x
  * @param y
  * @param Element
- * @param ParentNode
  */
 export function placeElementTo( x, y, Element ) {
     Element.style.left = x + measurement;
@@ -43,37 +43,36 @@ export function placeElementTo( x, y, Element ) {
 }
 
 /**
- * Set Element to be inline
+ * Place blocks vertically or horizontally inline
  *
  * @param Element
+ * @param snakePartBody
  * @returns {*}
  */
 export function setElementInline( Element, snakePartBody ) {
     Element.style.position = 'absolute'
-    Element.style.top = '1px'
-    Element.style.left = '0px'
 
     /**
-     * Place blocks vertically or horizontally
+     * Check if part of body not first and put element after prev.
      */
     if( typeof snakePartBody.style !== 'undefined' ) {
-        SnakeCommon.direction === 'top' || SnakeCommon.direction === 'bottom' ?
+        /**
+         * In row vertically
+         */
+        if(SnakeCommon.direction === 'top' || SnakeCommon.direction === 'bottom') {
             Element.style.top = ( ( snakePartBody.style.top.split('px')[0] * 1) + sizeElement + 2 ) + measurement
-            :
+            Element.style.left = snakePartBody.style.left
+        }
+        /**
+         * In row horizontally
+         */
+        else {
             Element.style.left = ( ( snakePartBody.style.left.split('px')[0] * 1 ) + sizeElement + 2 ) + measurement
-    }
-
-    return Element
-}
-
-/**
- * Styles for common blocks
- *
- * @param Element
- */
-export function stylizeElementCommon( Element ) {
-    for ( let specificStyle in snakeElements.common ) {
-        Element.style[ specificStyle ] = snakeElements.common[ specificStyle ]
+            Element.style.top = snakePartBody.style.top
+        }
+    } else {
+        Element.style.left = getRandomInt( 0, fieldSizes.width ) + measurement
+        Element.style.top = getRandomInt( 0, fieldSizes.height ) + measurement
     }
 
     return Element
@@ -90,9 +89,12 @@ export function generateElement( Object, simpleBlock = false, snakePartBody = fa
     /**
      * Common style objects
      */
-    if( simpleBlock ) stylizeElementCommon( newElement )
-    if( snakePartBody ) setElementInline( newElement, snakePartBody )
-    if( !snakePartBody ) placeElementTo( ...generateCoordinates(), newElement )
+    if( simpleBlock ) setStylesInstance( snakeElements.common, newElement )
+
+     snakePartBody ?
+         setElementInline( newElement, snakePartBody )
+         :
+         placeElementTo( ...generateCoordinates(), newElement )
 
     return injectElement( newElement, Object )
 }

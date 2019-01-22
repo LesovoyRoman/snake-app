@@ -23,7 +23,7 @@ export default class GameField extends HTMLElement {
         /**
          * Generate first block
          */
-        generateElement( GameField.gameFieldToInject )
+        generateElement( GameField.gameFieldToInject, true, false )
     }
 
     /**

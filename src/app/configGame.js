@@ -2,6 +2,17 @@
 
 export const measurement = 'px';
 export const sizeElement = 4;
+export const elementToGenerate = 'snake-element';
+export const snakeDirections = [ 'right', 'left', 'bottom', 'top' ];
+
+/**
+ * Sizes for app field
+ * @type {{width: number, height: number}}
+ */
+export const fieldSizes = {
+    width: 500,
+    height: 300
+}
 
 /**
  * Elements
@@ -14,16 +25,6 @@ export const snakeElements = {
         background: '#000',
         position: 'absolute',
     },
-}
-export const elementToGenerate = 'snake-element';
-
-/**
- * Sizes for app field
- * @type {{width: number, height: number}}
- */
-export const fieldSizes = {
-    width: 500,
-    height: 300
 }
 
 /**
@@ -39,17 +40,15 @@ export const gameField = {
     overflow: 'hidden'
 }
 
-export const snakeDirections = [ 'right', 'left', 'bottom', 'top' ];
-
+/**
+ * Snake settings
+ *
+ * @type {{speed: number, length: number, direction: string}}
+ */
 export const snake = {
     speed: 500,
     length: 5,
-    direction: snakeDirections[2],
-    settable: {
-        position: 'absolute',
-        left: 150 + measurement,
-        top: 100 + measurement,
-    }
+    direction: snakeDirections[2]
 }
 
 

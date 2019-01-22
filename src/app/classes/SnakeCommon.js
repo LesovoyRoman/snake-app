@@ -1,7 +1,7 @@
 'use strict';
 
 import template from './../components/SnakeCommon.html'
-import { parseHtml, bindTemplate, singleton, setStylesInstance } from './../helpers/bundle'
+import { parseHtml, bindTemplate, singleton } from './../helpers/bundle'
 import {snake, sizeElement, measurement} from "../configGame";
 import { generateElement } from "../helpers/generatorElements";
 
@@ -26,7 +26,7 @@ export default class SnakeCommon extends HTMLElement {
     }
 
     static setStyles() {
-        return setStylesInstance( snake.settable, SnakeCommon.snakeBody )
+
     }
 
     static buildSnake() {
@@ -43,11 +43,13 @@ export default class SnakeCommon extends HTMLElement {
 
     static moveSnakeTo(x, back) {
         back ?
-            SnakeCommon.snakeBody.style[ x ? 'left' : 'top' ] =
-                SnakeCommon.snakeBody.style[ x ? 'left' : 'top' ].split( measurement )[ 0 ] * 1 - sizeElement + measurement
+                SnakeCommon.snakeBody.childNodes.forEach((e) => {
+                    e.style[ x ? 'left' : 'top' ] = e.style[ x ? 'left' : 'top' ].split( measurement )[ 0 ] * 1 - sizeElement + measurement
+                })
             :
-            SnakeCommon.snakeBody.style[ x ? 'left' : 'top' ] =
-                SnakeCommon.snakeBody.style[ x ? 'left' : 'top' ].split( measurement )[ 0 ] * 1 + sizeElement + measurement
+                SnakeCommon.snakeBody.childNodes.forEach((e) => {
+                    e.style[ x ? 'left' : 'top' ] = e.style[ x ? 'left' : 'top' ].split( measurement )[ 0 ] * 1 + sizeElement + measurement
+                })
     }
 
     /**
