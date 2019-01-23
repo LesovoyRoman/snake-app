@@ -10,8 +10,8 @@ export const snakeDirections = [ 'right', 'left', 'bottom', 'top' ];
  * @type {{width: number, height: number}}
  */
 export const fieldSizes = {
-    width: 500,
-    height: 300
+    width: 400,
+    height: 400
 }
 
 /**
@@ -48,7 +48,7 @@ export const gameField = {
 export const snake = {
     speed: 500,
     length: 5,
-    direction: snakeDirections[0]
+    direction: snakeDirections[1]
 }
 
 

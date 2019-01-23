@@ -51,14 +51,18 @@ export function checkOutOfGameField( Element, direction, index ) {
     /**
      * Set opposite position for each direction
      */
-    if( index === 0 && ( positionInDirection < 0 || positionInDirection >= fieldSizes[ border ] ) ) {
-        Element.style[ direction ] = fieldSizes[ border ] + measurement
+    if( index === 0  ) {
+
+        if ( positionInDirection < 0 ) Element.style[ direction ] = fieldSizes[ border ] + measurement
+        if ( positionInDirection >= fieldSizes[ border ] ) Element.style[ direction ] = 0 + measurement
+
     }  else if( positionInDirection < 0 || positionInDirection >= fieldSizes[ border ] ) {
+
         if ( positionInDirection >= fieldSizes[ border ] )
             Element.style[ direction ] = separateElementSnakeBody( SnakeCommon.snakeBody.childNodes[ index - 1 ], direction,  true ) + measurement
 
         if( positionInDirection < 0 )
-            Element.style[ direction ] = separateElementSnakeBody( SnakeCommon.snakeBody.childNodes[ index - 1], direction ) + measurement
+            Element.style[ direction ] = separateElementSnakeBody( SnakeCommon.snakeBody.childNodes[ index - 1 ], direction ) + measurement
     }
 }
 
