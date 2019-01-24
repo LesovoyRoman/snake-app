@@ -1,8 +1,8 @@
 'use strict';
 
-import { elementToGenerate, fieldSizes, measurement, snakeElements, sizeElement } from "../configGame";
+import { elementToGenerate, fieldSizes, measurement, snakeElements } from "../configGame";
 import SnakeCommon from './../classes/SnakeCommon'
-import {separateElementSnakeBody, setStylesInstance} from "./bundle";
+import * as bundle from "./bundle";
 
 /**
  * Generate value from min to max
@@ -60,14 +60,14 @@ export function setElementInline( Element, snakePartBody ) {
          * In row vertically
          */
         if(SnakeCommon.direction === 'top' || SnakeCommon.direction === 'bottom') {
-            Element.style.top =  separateElementSnakeBody( snakePartBody, 'top' ) + measurement
+            Element.style.top =  bundle.separateElementSnakeBody( snakePartBody, 'top' ) + measurement
             Element.style.left = snakePartBody.style.left
         }
         /**
          * In row horizontally
          */
         else {
-            Element.style.left = separateElementSnakeBody( snakePartBody, 'left' ) + measurement
+            Element.style.left = bundle.separateElementSnakeBody( snakePartBody, 'left' ) + measurement
             Element.style.top = snakePartBody.style.top
         }
     } else {
@@ -89,14 +89,14 @@ export function generateElement( Object, simpleBlock = false, snakePartBody = fa
     /**
      * Common style objects
      */
-    if( simpleBlock ) setStylesInstance( snakeElements.common, newElement )
+    if( simpleBlock ) bundle.setStylesInstance( snakeElements.common, newElement )
 
      snakePartBody ?
          setElementInline( newElement, snakePartBody )
          :
          placeElementTo( ...generateCoordinates(), newElement )
 
-    return injectElement( newElement, Object )
+    return injectElement( newElement, Object );
 }
 
 /**
