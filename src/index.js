@@ -6,6 +6,7 @@ import SnakeApp from './app/classes/SnakeApp';
 import GameField from './app/classes/GameField'
 import SnakeElement from './app/classes/SnakeElement'
 import SnakeCommon from './app/classes/SnakeCommon'
+import AppEvents from './app/classes/AppEvents'
 
 import { elementToGenerate } from "./app/configGame";
 
@@ -30,3 +31,4 @@ const Elements = [
 ]
 
 defineElements( Elements )
+new AppEvents();

@@ -1,7 +1,7 @@
 'use strict';
 
 import template from './../components/SnakeCommon.html'
-import {parseHtml, bindTemplate, singleton, checkOutOfGameField, getValueNumberStyles} from './../helpers/bundle'
+import { parseHtml, bindTemplate, singleton, checkOutOfGameField, getValueNumberStyles } from './../helpers/bundle'
 import { snake, sizeElement, measurement } from "../configGame";
 import { generateElement } from "../helpers/generatorElements";
 
@@ -34,6 +34,7 @@ export default class SnakeCommon extends HTMLElement {
         for ( let i = 0; i < snake.length; i++ ) {
             generatedElement = generateElement( SnakeCommon.snakeBody, true, generatedElement )
         }
+        SnakeCommon.snakeBody.childNodes[0].style.background = snake.headColor;
     }
 
     // @todo function to increase snake
@@ -83,9 +84,11 @@ export default class SnakeCommon extends HTMLElement {
         }
     }
 
-    // @todo needs to change body of snake
-    // @todo call function to set in row elements
     static changeDirection( direction ) {
-        SnakeCommon.direction = direction
+
+        if( ( direction === 'right' || direction === 'left' ) && ( SnakeCommon.direction === 'left' || SnakeCommon.direction === 'right' ) ) return;
+        if( ( direction === 'top' || direction === 'bottom' ) && ( SnakeCommon.direction === 'top' || SnakeCommon.direction === 'bottom' ) ) return;
+
+        return SnakeCommon.direction = direction
     }
 }
