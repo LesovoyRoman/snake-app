@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack",
-    "server": "webpack-dev-server --mode=development --content-base ./dist/ --watch-content-base --port 9999 --hot"
+    "server": "webpack-dev-server --mode=development --content-base ./dist/ --watch-content-base --port 9999 --hot",
+    "prod": "webpack-dev-server --mode=production --port 9000 --content-base ./dist/"
   },
   "keywords": [],
   "author": "",
