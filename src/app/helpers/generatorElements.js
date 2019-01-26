@@ -1,6 +1,6 @@
 'use strict';
 
-import { elementToGenerate, fieldSizes, measurement, snakeElements, directions } from "../configGame";
+import { elementToGenerate, fieldSizes, measurement, snakeElements, directions, simpleElements } from "../configGame";
 import SnakeCommon from './../classes/SnakeCommon'
 import * as bundle from "./bundle";
 
@@ -97,7 +97,12 @@ export function generateElement( Object, simpleBlock = false, snakePartBody = fa
      */
     if( simpleBlock ) bundle.setStylesInstance( snakeElements.common, newElement )
 
-     snakePartBody ?
+    /**
+     * Styles simple elements
+     */
+    if( !snakePartBody ) bundle.setStylesInstance( simpleElements.common, newElement )
+
+    snakePartBody ?
          setElementInline( newElement, snakePartBody )
          :
          placeElementTo( ...generateCoordinates(), newElement )

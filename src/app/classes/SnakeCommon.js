@@ -74,6 +74,7 @@ export default class SnakeCommon extends HTMLElement {
                  */
                 if( currentStep === ( e  + index + 1) ) Instance.direction = specificDirection;
 
+                // @todo clean up when last element turned !
             } )
 
         }
@@ -109,6 +110,11 @@ export default class SnakeCommon extends HTMLElement {
     }
 
     static changeDirection( direction ) {
+
+        /**
+         * Game paused
+         */
+        if(SnakeApp.paused) return;
 
         if( ( direction === directions.right || direction === directions.left ) 
             && 

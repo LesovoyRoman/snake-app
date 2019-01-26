@@ -41,12 +41,12 @@ export default class SnakeApp extends HTMLElement {
              * Game process timer
              * @type {number}
              */
+            if(!SnakeApp.paused) {
+                SnakeApp.countedSteps++;
+                SnakeCommon.moveSnake(SnakeApp.countedSteps);
+            }
 
-            SnakeApp.countedSteps++;
-
-            SnakeCommon.moveSnake(SnakeApp.countedSteps);
-
-            if(!SnakeApp.paused) gameTimer = setTimeout(moment, snake.speed);
+             gameTimer = setTimeout(moment, snake.speed);
         }, snake.speed);
     }
 }

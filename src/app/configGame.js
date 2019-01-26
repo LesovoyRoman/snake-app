@@ -42,6 +42,7 @@ export const fieldSizes = {
 
 /**
  * Elements
+ *
  * @type {{common: {width: string, height: string, background: string}}}
  */
 export const snakeElements = {
@@ -57,7 +58,21 @@ export const snakeElements = {
 }
 
 /**
+ * Simple elements
+ *
+ * @type {{common: {background: string, width: string, height: string}}}
+ */
+export const simpleElements = {
+    common: {
+        background: '#f60008',
+        width: 8 + measurement,
+        height: 8 + measurement
+    }
+}
+
+/**
  * Some styles for field
+ *
  * @type {{width: string, height: string, border: string, margin: string}}
  */
 export const gameField = {
