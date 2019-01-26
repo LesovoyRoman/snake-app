@@ -67,14 +67,18 @@ export default class SnakeCommon extends HTMLElement {
             /**
              * Go through each saved value in direction ( step which was saved )
              */
-            SnakeCommon.historyDirections[specificDirection].forEach( e => {
+            SnakeCommon.historyDirections[specificDirection].forEach( (e, indexStep)  => {
 
                 /**
                  * Check if it's time to turn for Element -> then change direction
                  */
                 if( currentStep === ( e  + index + 1) ) Instance.direction = specificDirection;
 
-                // @todo clean up when last element turned !
+                /**
+                 * Clean step in directions (after last element turned)
+                 */
+                if ( currentStep === ( e  + index + 1 ) && ( index + 1 ) === SnakeCommon.snakeBody.childNodes.length )
+                    SnakeCommon.historyDirections[specificDirection].splice(indexStep, 1);
             } )
 
         }

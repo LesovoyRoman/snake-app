@@ -25,7 +25,7 @@ export const directions = {
  */
 export const snake = {
     speed: 100,
-    length: 65,
+    length: 50,
     headColor: '#31f628',
     direction: directions.top
 }
