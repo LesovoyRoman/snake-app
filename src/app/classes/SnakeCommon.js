@@ -94,12 +94,12 @@ export default class SnakeCommon extends HTMLElement {
             /**
              * Check if snake ate itself
              */
-
+            SnakeCommon.compareHeadSnakeWithElementPosition( Element ) ? SnakeApp.endGame() : null;
 
             /**
              * Compare arrays of directions and set specific Element direction
              */
-            SnakeCommon.compareHistoryDirectionsByCurrentStep( countedSteps, Element, index )
+            SnakeCommon.compareHistoryDirectionsByCurrentStep( countedSteps, Element, index );
 
             /**
              * Move specific Element
@@ -109,7 +109,7 @@ export default class SnakeCommon extends HTMLElement {
             /**
              * When snake get out of the boards -> it comes back in opposite side
              */
-            SnakeCommon.checkOutOfGameField( Element, index )
+            SnakeCommon.checkOutOfGameField( Element, index );
         })
     }
 
@@ -224,6 +224,9 @@ export default class SnakeCommon extends HTMLElement {
                  */
                 if ( comparedPosition === 2 )
                     Element.style[ direction ] = SnakeCommon.separateElementSnakeBody( SnakeCommon.snakeBody.childNodes[ index - 1 ], direction ) + measurement
+                break;
+            default:
+                break;
 
         }
     }
@@ -247,21 +250,25 @@ export default class SnakeCommon extends HTMLElement {
      */
     static compareElementPositionWithBoards( positionInDirection, border ) {
 
-        let result;
-        switch ( positionInDirection ) {
-            case positionInDirection >= fieldSizes[ border ]:
-                result = 1;
-                break;
-            case positionInDirection < 0:
-                result = 2;
-                break;
-            default:
-                result = 0;
-                break;
-        }
+        if( positionInDirection >= fieldSizes[ border ] ) return 1;
 
-        console.log(result)
+        if( positionInDirection < 0 ) return 2;
 
-        return result;
+        return 0;
+    }
+
+    /**
+     * Check if head stuck into body
+     */
+    static compareHeadSnakeWithElementPosition( Element ) {
+        return (
+            getValueNumberStyles( Element, directions.left )
+            === getValueNumberStyles( SnakeCommon.snakeBody.childNodes[0], directions.left )
+        &&
+            getValueNumberStyles( Element, directions.top )
+            === getValueNumberStyles( SnakeCommon.snakeBody.childNodes[0], directions.top )
+        &&
+                Element !== SnakeCommon.snakeBody.childNodes[0]
+        )
     }
 }
