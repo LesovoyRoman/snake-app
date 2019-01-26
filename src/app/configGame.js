@@ -3,10 +3,36 @@
 export const measurement = 'px';
 export const sizeElement = 4;
 export const elementToGenerate = 'snake-element';
-export const snakeDirections = [ 'right', 'left', 'bottom', 'top' ];
+
+/**
+ * Do not change it !!!
+ *
+ * @type {{right: string, left: string, top: string, bottom: string}}
+ */
+export const directions = {
+    right: 'right',
+    left: 'left',
+    top: 'top',
+    bottom: 'bottom'
+}
+
+/**
+ * Snake settings
+ *
+ * ( Use direction only top \ left )
+ *
+ * @type {{speed: number, length: number, direction: string}}
+ */
+export const snake = {
+    speed: 100,
+    length: 65,
+    headColor: '#31f628',
+    direction: directions.top
+}
 
 /**
  * Sizes for app field
+ *
  * @type {{width: number, height: number}}
  */
 export const fieldSizes = {
@@ -25,6 +51,9 @@ export const snakeElements = {
         background: '#000',
         position: 'absolute',
     },
+    attributes: {
+        direction: snake.direction
+    }
 }
 
 /**
@@ -38,18 +67,6 @@ export const gameField = {
     margin: 25 + measurement + ' auto',
     position: 'relative',
     overflow: 'hidden'
-}
-
-/**
- * Snake settings
- *
- * @type {{speed: number, length: number, direction: string}}
- */
-export const snake = {
-    speed: 500,
-    length: 5,
-    headColor: '#f60008',
-    direction: snakeDirections[0]
 }
 
 

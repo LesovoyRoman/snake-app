@@ -1,6 +1,7 @@
 'use strict';
 
 import SnakeCommon from './../classes/SnakeCommon'
+import { directions } from './../configGame'
 
 export const nameEvents = {
     toRight: 'toRight',
@@ -16,25 +17,25 @@ export const events = [
     {
         name: nameEvents.toRight,
         handler: ( event ) => {
-            SnakeCommon.changeDirection( 'left' )
+            SnakeCommon.changeDirection( directions.left )
         }
     },
     {
         name: nameEvents.toLeft,
         handler: ( event ) => {
-            SnakeCommon.changeDirection( 'right' )
+            SnakeCommon.changeDirection( directions.right )
         },
     },
     {
         name: nameEvents.toTop,
         handler: ( event ) => {
-            SnakeCommon.changeDirection( 'bottom' )
+            SnakeCommon.changeDirection( directions.bottom )
         }
     },
     {
         name: nameEvents.toBottom,
         handler: ( event ) => {
-            SnakeCommon.changeDirection( 'top' )
+            SnakeCommon.changeDirection( directions.top )
         }
     },
 ];

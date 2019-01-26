@@ -1,6 +1,6 @@
 'use strict';
 
-import { elementToGenerate, fieldSizes, measurement, snakeElements } from "../configGame";
+import { elementToGenerate, fieldSizes, measurement, snakeElements, directions } from "../configGame";
 import SnakeCommon from './../classes/SnakeCommon'
 import * as bundle from "./bundle";
 
@@ -59,20 +59,26 @@ export function setElementInline( Element, snakePartBody ) {
         /**
          * In row vertically
          */
-        if(SnakeCommon.direction === 'top' || SnakeCommon.direction === 'bottom') {
-            Element.style.top =  bundle.separateElementSnakeBody( snakePartBody, 'top' ) + measurement
+        if( SnakeCommon.direction === directions.top || SnakeCommon.direction === directions.bottom ) {
+            Element.style.top =  SnakeCommon.separateElementSnakeBody( snakePartBody, directions.top ) + measurement
             Element.style.left = snakePartBody.style.left
         }
         /**
          * In row horizontally
          */
         else {
-            Element.style.left = bundle.separateElementSnakeBody( snakePartBody, 'left' ) + measurement
+            Element.style.left = SnakeCommon.separateElementSnakeBody( snakePartBody, directions.left ) + measurement
             Element.style.top = snakePartBody.style.top
         }
     } else {
-        Element.style.left = getRandomInt( 0, fieldSizes.width ) + measurement
-        Element.style.top = getRandomInt( 0, fieldSizes.height ) + measurement
+        /**
+         * -> Put Snake on the center
+         * ( Snake body can not be generated out of the board! )
+         *
+         * @type {string}
+         */
+        Element.style.left = parseInt( parseInt( fieldSizes.width - ( SnakeCommon.lengthElements * 4 ) ) / 2 ) + measurement
+        Element.style.top = parseInt( parseInt( fieldSizes.height - ( SnakeCommon.lengthElements * 4 ) ) / 2 ) + measurement
     }
 
     return Element
