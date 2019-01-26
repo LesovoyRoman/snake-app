@@ -2,7 +2,7 @@
 
 import template from './../components/SnakeCommon.html'
 import { parseHtml, bindTemplate, singleton, getValueNumberStyles, setAttributes } from './../helpers/bundle'
-import { snake, sizeElement, measurement, snakeElements, fieldSizes, directions } from "../configGame";
+import { snake, sizeElement, measurement, snakeElements, fieldSizes, directions, allowThroughBorders } from "../configGame";
 import { generateElement } from "../helpers/generatorElements";
 import SnakeApp from "./SnakeApp";
 
@@ -56,7 +56,6 @@ export default class SnakeCommon extends HTMLElement {
         SnakeCommon.lengthElements++;
     }
 
-    // @todo needs to clean up sometimes!
     static compareHistoryDirectionsByCurrentStep( currentStep, Instance, index ) {
 
         /**
@@ -92,7 +91,10 @@ export default class SnakeCommon extends HTMLElement {
      */
     static moveSnake( countedSteps ) {
         SnakeCommon.snakeBody.childNodes.forEach( ( Element, index ) => {
-            let x;
+            /**
+             * Check if snake ate itself
+             */
+
 
             /**
              * Compare arrays of directions and set specific Element direction
@@ -107,9 +109,7 @@ export default class SnakeCommon extends HTMLElement {
             /**
              * When snake get out of the boards -> it comes back in opposite side
              */
-            Element.direction === directions.top || Element.direction === directions.bottom ?
-                x = directions.top : x = directions.left;
-            SnakeCommon.checkOutOfGameField( Element, x, index )
+            SnakeCommon.checkOutOfGameField( Element, index )
         })
     }
 
@@ -174,10 +174,13 @@ export default class SnakeCommon extends HTMLElement {
      * Uses for moving through boards in game field
      *
      * @param Element
-     * @param direction
      * @param index
      */
-    static checkOutOfGameField( Element, direction, index ) {
+    static checkOutOfGameField( Element, index ) {
+        let direction;
+        Element.direction === directions.top || Element.direction === directions.bottom ?
+            direction = directions.top : direction = directions.left;
+
         let positionInDirection = getValueNumberStyles( Element, direction )
 
         let border;
@@ -191,24 +194,37 @@ export default class SnakeCommon extends HTMLElement {
          *
          * ( Check if Element went through border and put it to closest prev. Element of Snake body )
          */
-        if( index === 0  ) {
 
-            if ( positionInDirection < 0 ) Element.style[ direction ] = fieldSizes[ border ] + measurement
-            if ( positionInDirection >= fieldSizes[ border ] ) Element.style[ direction ] = 0 + measurement
+        let comparedPosition = SnakeCommon.compareElementPositionWithBoards( positionInDirection, border );
 
-        }  else if( positionInDirection < 0 || positionInDirection >= fieldSizes[ border ] ) {
+        /**
+         * Not allowed go through boards
+         */
+        if( comparedPosition && !allowThroughBorders ) {
+            SnakeApp.endGame();
+            return;
+        }
 
+        switch ( comparedPosition ) {
             /**
-             * Right \ Bottom
+             * Head of snake
              */
-            if ( positionInDirection >= fieldSizes[ border ] )
-                Element.style[ direction ] = SnakeCommon.separateElementSnakeBody( SnakeCommon.snakeBody.childNodes[ index - 1 ], direction,  true ) + measurement
+            case index === 0 && comparedPosition:
+                if ( comparedPosition === 1 ) Element.style[ direction ] = 0 + measurement
+                if ( comparedPosition === 2 ) Element.style[ direction ] = fieldSizes[ border ] + measurement
+                break;
+            case index !== 0 && comparedPosition:
+                /**
+                 * Right \ Bottom
+                 */
+                if ( comparedPosition === 1 )
+                    Element.style[ direction ] = SnakeCommon.separateElementSnakeBody( SnakeCommon.snakeBody.childNodes[ index - 1 ], direction,  true ) + measurement
+                /**
+                 * Left \ Top
+                 */
+                if ( comparedPosition === 2 )
+                    Element.style[ direction ] = SnakeCommon.separateElementSnakeBody( SnakeCommon.snakeBody.childNodes[ index - 1 ], direction ) + measurement
 
-            /**
-             * Left \ Top
-             */
-            if( positionInDirection < 0 )
-                Element.style[ direction ] = SnakeCommon.separateElementSnakeBody( SnakeCommon.snakeBody.childNodes[ index - 1 ], direction ) + measurement
         }
     }
 
@@ -224,5 +240,28 @@ export default class SnakeCommon extends HTMLElement {
         if( versa )
             return getValueNumberStyles( Element, direction ) - ( sizeElement )
         return getValueNumberStyles( Element, direction ) + ( sizeElement )
+    }
+
+    /**
+     * Check if out of board by position
+     */
+    static compareElementPositionWithBoards( positionInDirection, border ) {
+
+        let result;
+        switch ( positionInDirection ) {
+            case positionInDirection >= fieldSizes[ border ]:
+                result = 1;
+                break;
+            case positionInDirection < 0:
+                result = 2;
+                break;
+            default:
+                result = 0;
+                break;
+        }
+
+        console.log(result)
+
+        return result;
     }
 }

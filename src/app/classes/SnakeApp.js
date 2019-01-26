@@ -16,6 +16,8 @@ export default class SnakeApp extends HTMLElement {
 
         SnakeApp.countedSteps = 0;
 
+        SnakeApp.ended = false;
+
         SnakeApp.callGame();
     }
 
@@ -28,6 +30,10 @@ export default class SnakeApp extends HTMLElement {
 
     static pauseGame() {
         return SnakeApp.paused = !SnakeApp.paused;
+    }
+
+    static endGame() {
+        SnakeApp.ended = true;
     }
 
     static callGame() {
@@ -46,7 +52,7 @@ export default class SnakeApp extends HTMLElement {
                 SnakeCommon.moveSnake(SnakeApp.countedSteps);
             }
 
-             gameTimer = setTimeout(moment, snake.speed);
+            if(!SnakeApp.ended) gameTimer = setTimeout(moment, snake.speed);
         }, snake.speed);
     }
 }

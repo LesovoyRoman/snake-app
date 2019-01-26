@@ -3,6 +3,7 @@
 export const measurement = 'px';
 export const sizeElement = 4;
 export const elementToGenerate = 'snake-element';
+export const allowThroughBorders = true;
 
 /**
  * Do not change it !!!
