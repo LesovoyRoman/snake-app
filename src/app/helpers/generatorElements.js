@@ -1,6 +1,6 @@
 'use strict';
 
-import { elementToGenerate, fieldSizes, measurement, snakeElements, directions, simpleElements } from "../configGame";
+import { elementToGenerate, fieldSizes, measurement, snakeElements, directions, simpleElements, sizeElement } from "../configGame";
 import SnakeCommon from './../classes/SnakeCommon'
 import * as bundle from "./bundle";
 
@@ -14,17 +14,20 @@ import * as bundle from "./bundle";
 export function getRandomInt( min, max ) {
     min = Math.ceil( min );
     max = Math.floor( max );
-    return Math.floor( Math.random() * ( max - min + 1 ) ) + min;
+    return Math.floor( Math.random() * ( max - min + 1 ) ) + min
 }
 
 /**
  * Generate coordinates
+ *
+ * ( but place where snake can achieve this )
+ *
  * @returns {number[]}
  */
 export function generateCoordinates() {
     return [
-        getRandomInt( 0, fieldSizes.width ),
-        getRandomInt( 0, fieldSizes.height )
+        getRandomInt( sizeElement, (fieldSizes.width / sizeElement) - sizeElement ) * sizeElement,
+        getRandomInt( sizeElement, (fieldSizes.height / sizeElement) - sizeElement ) * sizeElement
     ]
 }
 
@@ -47,38 +50,46 @@ export function placeElementTo( x, y, Element ) {
  *
  * @param Element
  * @param snakePartBody
+ * @param eatenElement
  * @returns {*}
  */
-export function setElementInline( Element, snakePartBody ) {
+export function setElementInline( Element, snakePartBody, eatenElement = false ) {
     Element.style.position = 'absolute'
 
     /**
-     * Check if part of body not first and put element after prev.
+     * Check if part of body not first and put Element after prev.
      */
     if( typeof snakePartBody.style !== 'undefined' ) {
+        Element.direction = snakePartBody.direction
         /**
-         * In row vertically
+         * Put Element in a row vertically \ horizontally after prev.
          */
-        if( SnakeCommon.direction === directions.top || SnakeCommon.direction === directions.bottom ) {
-            Element.style.top =  SnakeCommon.separateElementSnakeBody( snakePartBody, directions.top ) + measurement
-            Element.style.left = snakePartBody.style.left
-        }
-        /**
-         * In row horizontally
-         */
-        else {
-            Element.style.left = SnakeCommon.separateElementSnakeBody( snakePartBody, directions.left ) + measurement
-            Element.style.top = snakePartBody.style.top
+        switch ( Element.direction ){
+            case directions.right:
+                Element.style.left = SnakeCommon.separateElementSnakeBody( snakePartBody, directions.left, true, eatenElement ) + measurement
+                Element.style.top = snakePartBody.style.top
+                break
+            case directions.left:
+                Element.style.left = SnakeCommon.separateElementSnakeBody( snakePartBody, directions.left, false, eatenElement ) + measurement
+                Element.style.top = snakePartBody.style.top
+                break
+            case directions.top:
+                Element.style.top = SnakeCommon.separateElementSnakeBody( snakePartBody, directions.top, false, eatenElement ) + measurement
+                Element.style.left = snakePartBody.style.left
+                break
+            case directions.bottom:
+                Element.style.top = SnakeCommon.separateElementSnakeBody( snakePartBody, directions.top, true, eatenElement ) + measurement
+                Element.style.left = snakePartBody.style.left
+                break
+            default:
+                break;
         }
     } else {
         /**
-         * -> Put Snake on the center
-         * ( Snake body can not be generated out of the board! )
-         *
-         * @type {string}
+         * -> Put Snake
          */
-        Element.style.left = parseInt( parseInt( fieldSizes.width - ( SnakeCommon.lengthElements * 4 ) ) / 2 ) + measurement
-        Element.style.top = parseInt( parseInt( fieldSizes.height - ( SnakeCommon.lengthElements * 4 ) ) / 2 ) + measurement
+        Element.style.left = fieldSizes.width / 2 + measurement
+        Element.style.top = fieldSizes.height / 2 + measurement
     }
 
     return Element
@@ -89,7 +100,7 @@ export function setElementInline( Element, snakePartBody ) {
  *
  * @returns {*}
  */
-export function generateElement( Object, simpleBlock = false, snakePartBody = false ) {
+export function generateElement( Object, simpleBlock = false, snakePartBody = false, eatenElement = false ) {
     let newElement = document.createElement( elementToGenerate )
 
     /**
@@ -103,7 +114,7 @@ export function generateElement( Object, simpleBlock = false, snakePartBody = fa
     if( !snakePartBody ) bundle.setStylesInstance( simpleElements.common, newElement )
 
     snakePartBody ?
-         setElementInline( newElement, snakePartBody )
+         setElementInline( newElement, snakePartBody, eatenElement )
          :
          placeElementTo( ...generateCoordinates(), newElement )
 

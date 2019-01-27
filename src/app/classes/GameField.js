@@ -18,12 +18,39 @@ export default class GameField extends HTMLElement {
          * @type {HTMLElement}
          */
         GameField.gameFieldToInject = this.shadowRoot.getElementById( 'gameField' );
+
         GameField.setStyles();
+
+        GameField.score = 0;
+
+        GameField.elementsActive = [];
 
         /**
          * Generate first block
          */
-        generateElement( GameField.gameFieldToInject, true, false )
+        GameField.callGenerateElement();
+    }
+
+    static cleanElementsActive( Element, index ) {
+        GameField.score++;
+        GameField.setScoreView();
+        Element.remove()
+        return GameField.elementsActive.splice( index, 1 );
+    }
+
+    static setScoreView() {
+        document.getElementById('score').innerText = "Score: " + GameField.score;
+    }
+
+    /**
+     * Uses to make new elements
+     *
+     * @returns {Number}
+     */
+    static callGenerateElement() {
+        return GameField.elementsActive.push(
+            generateElement( GameField.gameFieldToInject, true, false )
+        )
     }
 
     /**

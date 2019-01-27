@@ -1,9 +1,9 @@
 'use strict';
 
 export const measurement = 'px';
-export const sizeElement = 4;
+export const sizeElement = 10;
 export const elementToGenerate = 'snake-element';
-export const allowThroughBorders = true;
+export const allowThroughBorders = false;
 
 /**
  * Do not change it !!!
@@ -26,7 +26,7 @@ export const directions = {
  */
 export const snake = {
     speed: 100,
-    length: 50,
+    length: 5,
     headColor: '#31f628',
     direction: directions.top
 }
@@ -66,8 +66,8 @@ export const snakeElements = {
 export const simpleElements = {
     common: {
         background: '#f60008',
-        width: 8 + measurement,
-        height: 8 + measurement
+        width: sizeElement + measurement,
+        height: sizeElement + measurement
     }
 }
 
@@ -79,7 +79,7 @@ export const simpleElements = {
 export const gameField = {
     width: fieldSizes.width + measurement,
     height: fieldSizes.height + measurement,
-    border: 4 + measurement + ' solid black',
+    border: sizeElement + measurement + ' solid black',
     margin: 25 + measurement + ' auto',
     position: 'relative',
     overflow: 'hidden'

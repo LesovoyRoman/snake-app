@@ -5,6 +5,7 @@ import { parseHtml, bindTemplate, singleton, getValueNumberStyles, setAttributes
 import { snake, sizeElement, measurement, snakeElements, fieldSizes, directions, allowThroughBorders } from "../configGame";
 import { generateElement } from "../helpers/generatorElements";
 import SnakeApp from "./SnakeApp";
+import GameField from "./GameField"
 
 export default class SnakeCommon extends HTMLElement {
     constructor() {
@@ -51,13 +52,16 @@ export default class SnakeCommon extends HTMLElement {
         SnakeCommon.snakeBody.childNodes[0].style.background = snake.headColor;
     }
 
-    // @todo function to increase snake
     static multiplySnake() {
-        SnakeCommon.lengthElements++;
+        generateElement(
+            SnakeCommon.snakeBody,
+            true,
+            SnakeCommon.snakeBody.childNodes[ SnakeCommon.snakeBody.childNodes.length - 1 ],
+            true
+        )
     }
 
     static compareHistoryDirectionsByCurrentStep( currentStep, Instance, index ) {
-
         /**
          * Go through each direction
          */
@@ -92,9 +96,23 @@ export default class SnakeCommon extends HTMLElement {
     static moveSnake( countedSteps ) {
         SnakeCommon.snakeBody.childNodes.forEach( ( Element, index ) => {
             /**
+             * Check if ate simple element
+             */
+            GameField.elementsActive.forEach( ( E, index ) => {
+                   if(SnakeCommon.compareHeadSnakeWithElementPosition( E )
+                    && Element === SnakeCommon.snakeBody.childNodes[0]) {
+                        SnakeCommon.multiplySnake();
+                        GameField.cleanElementsActive( E, index );
+                        GameField.callGenerateElement();
+                   }
+            });
+
+            /**
              * Check if snake ate itself
              */
-            SnakeCommon.compareHeadSnakeWithElementPosition( Element ) ? SnakeApp.endGame() : null;
+            SnakeCommon.compareHeadSnakeWithElementPosition( Element )
+                && Element !== SnakeCommon.snakeBody.childNodes[0] ?
+                    SnakeApp.endGame() : null;
 
             /**
              * Compare arrays of directions and set specific Element direction
@@ -237,16 +255,24 @@ export default class SnakeCommon extends HTMLElement {
      * @param Element
      * @param direction
      * @param versa
+     * @param eatenElement
      * @returns {number}
      */
-    static separateElementSnakeBody( Element, direction, versa = false ) {
+    static separateElementSnakeBody( Element, direction, versa = false, eatenElement = false ) {
+        let increaseDecrease;
+        eatenElement ?
+            increaseDecrease = 0 : increaseDecrease = sizeElement
         if( versa )
-            return getValueNumberStyles( Element, direction ) - ( sizeElement )
-        return getValueNumberStyles( Element, direction ) + ( sizeElement )
+            return getValueNumberStyles( Element, direction ) - increaseDecrease
+        return getValueNumberStyles( Element, direction ) + increaseDecrease
     }
 
     /**
      * Check if out of board by position
+     *
+     * @param positionInDirection
+     * @param border
+     * @returns {number}
      */
     static compareElementPositionWithBoards( positionInDirection, border ) {
 
@@ -259,6 +285,9 @@ export default class SnakeCommon extends HTMLElement {
 
     /**
      * Check if head stuck into body
+     *
+     * @param Element
+     * @returns {boolean}
      */
     static compareHeadSnakeWithElementPosition( Element ) {
         return (
@@ -267,8 +296,6 @@ export default class SnakeCommon extends HTMLElement {
         &&
             getValueNumberStyles( Element, directions.top )
             === getValueNumberStyles( SnakeCommon.snakeBody.childNodes[0], directions.top )
-        &&
-                Element !== SnakeCommon.snakeBody.childNodes[0]
         )
     }
 }
